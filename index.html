@@ -30,7 +30,7 @@
 
       <!-- Producto 2 -->
       <div class="producto">
-        <img src="img/Mascarilla.jpg" alt="MASCARILLA" />
+        <img src="img/mascarilla.jpg" alt="MASCARILLA" />
         <h3>MASCARILLA - NUTRICIÓN</h3>
         <p class="descripcion">Este acondicionador devuelve brillo y vida al cabello maltratado o seco.</p>
         <p class="precio">CHF 25</p>
@@ -40,7 +40,7 @@
 
       <!-- Producto 3 -->
       <div class="producto">
-        <img src="img/Champu.jpg" alt="SHAMPOO" />
+        <img src="img/champu.jpg" alt="SHAMPOO" />
         <h3>SHAMPOO - REPARACIÓN</h3>
         <p class="descripcion">Shampoo para cabellos secos, con ácido hialurónico para reparación intensa.</p>
         <p class="precio">CHF 28</p>
@@ -50,7 +50,7 @@
 
       <!-- Producto 4 -->
       <div class="producto">
-        <img src="img/Acondicionador.jpg" alt="ACONDICIONADOR" />
+        <img src="img/acondicionador.jpg" alt="ACONDICIONADOR" />
         <h3>ACONDICIONADOR DE PROTEÍNA DE SEDA</h3>
         <p class="descripcion">Contiene proteínas que reparan el cabello y lo dejan con brillo natural.</p>
         <p class="precio">CHF 25</p>
@@ -76,7 +76,6 @@
     
     <!-- MENSAJE PARA WHATSAPP -->
     <div id="mensaje-whatsapp" style="background:#fff0f5; padding:20px; border-radius:12px; margin-top:20px; display:none;"></div>
-    <button onclick="copiarMensaje()" class="btn-ir-contacto">Copiar mensaje</button>
     
     <!-- BOTÓN WHATSAPP -->
     <a id="btn-whatsapp" href="#" target="_blank" class="btn-whatsapp">Contactar por WhatsApp</a>
@@ -136,13 +135,6 @@
         document.getElementById('btn-whatsapp').href = '#';
         document.getElementById('mensaje-whatsapp').style.display = 'none';
       }
-    }
-
-    function copiarMensaje() {
-      const mensaje = document.getElementById('mensaje-whatsapp').textContent;
-      navigator.clipboard.writeText(mensaje)
-        .then(() => alert('Mensaje copiado. Ahora pégalo en WhatsApp 💬'))
-        .catch(() => alert('Error al copiar el mensaje'));
     }
   </script>
 </body>
