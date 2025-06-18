@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Carmen Ag - Belleza</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- INICIO -->
+  <section id="inicio" class="seccion">
+    <img src="img/logo.jpg" alt="Logo" class="logo-grande" />
+    <h1 class="nombre-tienda">Carmen Ag</h1>
+    <button onclick="mostrarSeccion('productos')" class="btn-ingresar">Ingresar</button>
+  </section>
+
+  <!-- PRODUCTOS -->
+  <section id="productos" class="seccion oculto">
+    <h2>Productos Disponibles</h2>
+    <div class="productos-grid">
+      <!-- Producto 1 -->
+      <div class="producto">
+        <img src="img/spray.jpg" alt="SPRAY" />
+        <h3>SPRAY - PROTECCIÓN SOLAR</h3>
+        <p class="descripcion">Protección e hidratación del cabello. Protege la fibra capilar y el color del cabello.</p>
+        <p class="precio">CHF 30</p>
+        <input type="number" min="1" value="1" id="cantidad1" />
+        <button onclick="agregarAlCarrito('SPRAY', 30, 'cantidad1')">Agregar al carrito</button>
+      </div>
+
+      <!-- Producto 2 -->
+      <div class="producto">
+        <img src="img/mascarilla.jpg" alt="MASCARILLA" />
+        <h3>MASCARILLA - NUTRICIÓN</h3>
+        <p class="descripcion">Este acondicionador devuelve brillo y vida al cabello maltratado o seco.</p>
+        <p class="precio">CHF 25</p>
+        <input type="number" min="1" value="1" id="cantidad2" />
+        <button onclick="agregarAlCarrito('MASCARILLA', 25, 'cantidad2')">Agregar al carrito</button>
+      </div>
+
+      <!-- Producto 3 -->
+      <div class="producto">
+        <img src="img/champu.jpg" alt="SHAMPOO" />
+        <h3>SHAMPOO - REPARACIÓN</h3>
+        <p class="descripcion">Shampoo para cabellos secos, con ácido hialurónico para reparación intensa.</p>
+        <p class="precio">CHF 28</p>
+        <input type="number" min="1" value="1" id="cantidad3" />
+        <button onclick="agregarAlCarrito('SHAMPOO', 28, 'cantidad3')">Agregar al carrito</button>
+      </div>
+
+      <!-- Producto 4 -->
+      <div class="producto">
+        <img src="img/acondicionador.jpg" alt="ACONDICIONADOR" />
+        <h3>ACONDICIONADOR DE PROTEÍNA DE SEDA</h3>
+        <p class="descripcion">Contiene proteínas que reparan el cabello y lo dejan con brillo natural.</p>
+        <p class="precio">CHF 25</p>
+        <input type="number" min="1" value="1" id="cantidad4" />
+        <button onclick="agregarAlCarrito('ACONDICIONADOR', 25, 'cantidad4')">Agregar al carrito</button>
+      </div>
+    </div>
+
+    <!-- Carrito -->
+    <div class="carrito">
+      <h3>🛒 Carrito de Compras</h3>
+      <ul id="lista-carrito"></ul>
+      <p><strong>Total: CHF <span id="total">0</span></strong></p>
+    </div>
+
+    <button onclick="mostrarSeccion('contacto')" class="btn-ir-contacto">Ir a Contacto</button>
+  </section>
+
+  <!-- CONTACTO -->
+  <section id="contacto" class="seccion oculto">
+    <h2>Gracias por elegirnos 💖</h2>
+    <p>Tu belleza es nuestra pasión. Estamos felices de ayudarte a brillar ✨</p>
+    
+    <!-- MENSAJE PARA WHATSAPP -->
+    <div id="mensaje-whatsapp" style="background:#fff0f5; padding:20px; border-radius:12px; margin-top:20px; display:none;"></div>
+    <button onclick="copiarMensaje()" class="btn-ir-contacto">Copiar mensaje</button>
+    
+    <!-- BOTÓN WHATSAPP -->
+    <a id="btn-whatsapp" href="#" target="_blank" class="btn-whatsapp">Contactar por WhatsApp</a>
+  </section>
+
+  <script>
+    let carrito = [];
+
+    function mostrarSeccion(id) {
+      document.querySelectorAll('.seccion').forEach(s => s.classList.add('oculto'));
+      document.getElementById(id).classList.remove('oculto');
+    }
+
+    function agregarAlCarrito(nombre, precio, idCantidad) {
+      const cantidad = parseInt(document.getElementById(idCantidad).value);
+      if (cantidad <= 0) return;
+      const existente = carrito.find(p => p.nombre === nombre);
+      if (existente) {
+        existente.cantidad += cantidad;
+      } else {
+        carrito.push({ nombre, precio, cantidad });
+      }
+      actualizarCarrito();
+    }
+
+    function actualizarCarrito() {
+      const lista = document.getElementById('lista-carrito');
+      const totalSpan = document.getElementById('total');
+      lista.innerHTML = '';
+      let total = 0;
+
+      carrito.forEach((item, index) => {
+        total += item.precio * item.cantidad;
+        const li = document.createElement('li');
+        li.textContent = `${item.nombre} x ${item.cantidad} = CHF ${item.precio * item.cantidad}`;
+        const btn = document.createElement('button');
+        btn.textContent = '❌';
+        btn.onclick = () => {
+          carrito.splice(index, 1);
+          actualizarCarrito();
+        };
+        li.appendChild(btn);
+        lista.appendChild(li);
+      });
+
+      totalSpan.textContent = total;
+
+      const mensaje = carrito.map(p => `${p.nombre} x${p.cantidad}`).join(', ');
+      const textoWhatsApp = `Hola! Quiero comprar: ${mensaje}. Total: CHF ${total}`;
+
+      if (carrito.length > 0) {
+        const enlace = `https://wa.me/41782533080?text=${encodeURIComponent(textoWhatsApp)}`;
+        document.getElementById('btn-whatsapp').href = enlace;
+        document.getElementById('mensaje-whatsapp').textContent = textoWhatsApp;
+        document.getElementById('mensaje-whatsapp').style.display = 'block';
+      } else {
+        document.getElementById('btn-whatsapp').href = '#';
+        document.getElementById('mensaje-whatsapp').style.display = 'none';
+      }
+    }
+
+    function copiarMensaje() {
+      const mensaje = document.getElementById('mensaje-whatsapp').textContent;
+      navigator.clipboard.writeText(mensaje)
+        .then(() => alert('Mensaje copiado. Ahora pégalo en WhatsApp 💬'))
+        .catch(() => alert('Error al copiar el mensaje'));
+    }
+  </script>
+</body>
+</html>
